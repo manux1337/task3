@@ -10,51 +10,42 @@ namespace n1
         static void Main(string[] args)
         {
             Console.Title = "Task3-#1";
-            Euclide eu = new Euclide();
-            Console.WriteLine("Введите A,B");
-            eu.a = Convert.ToInt16(Console.ReadLine());
-            eu.b = Convert.ToInt16(Console.ReadLine());
-            Console.Write("{0}>{1}",eu.a,eu.b);
-            while (eu.getNext())
-            {
-                Console.Write(">{0}",eu.b);
-            }
-            Console.WriteLine("\nНОД = {0}",eu.result);
-            Console.WriteLine();
-            eu.paint();
+            Console.Write("Введите A = ");
+            int a = Convert.ToInt16(Console.ReadLine());
+            Console.Write("Введите B = ");
+            int b = Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine("Метод Евклида = {0}",Euclide.GetGCD(a,b));
+            Console.WriteLine("Бинарный метод = {0}",Euclide.GetBGCD(a,b));
+            Console.WriteLine("\nНажмите любую клавишу для выхода...");
             Console.ReadKey();
         }
     }
 
     class Euclide
     {
-        public int a, b;
-        public int result;
-        public bool getNext()
+
+        public static int GetGCD(int a, int b)
         {
-            if (a % b == 0) { result = b; return false; }
-            int c = a%b;
-            a = b;
-            b = c;
-            return true;
+            return ((a!=0)&&(b!=0))?(a > b) ? GetGCD(a - b, b) : GetGCD(a, b - a):a+b;
         }
 
-        public void paint()
+        public static int GetBGCD(int a, int b)
         {
-            string[] s = new string[12];
-            s[0]+="  ____\n /|  /|\n/_|_/_|";
-            for (int i = 1; i < 10; i++)
+            if (a == b) return a;
+            if (a == 0) return b;
+            if (b == 0) return a;
+            if ((a&1)==0) 
             {
-                s[i] += "| | | |";
+                if ((b&1)!=0)
+                    return GetBGCD(a >> 1, b);
+                else
+                    return GetBGCD(a >> 1, b >> 1) << 1;
             }
-            s[10]+="| /-|-/\n|/__|/\n";
-
-            for (int i = 0; i < s.Length; i++)
-            {
-
-                Console.WriteLine(s[i]);
-            }
-
+            if((b&1)==0)
+                return GetBGCD(a, b >> 1);
+            if (a > b)
+                return GetBGCD((a - b) >> 1, b);
+            return GetBGCD((b - a) >> 1, a);
         }
     }
 }
