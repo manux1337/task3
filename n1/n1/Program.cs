@@ -13,9 +13,16 @@ namespace n1
             Console.Write("Введите A = ");
             int a = Convert.ToInt16(Console.ReadLine());
             Console.Write("Введите B = ");
+            int[] arr = new int[6]{28,22,32,60,40,26};
             int b = Convert.ToInt16(Console.ReadLine());
-            Console.WriteLine("Метод Евклида = {0}",Euclide.GetGCD(a,b));
-            Console.WriteLine("Бинарный метод = {0}",Euclide.GetBGCD(a,b));
+            Console.WriteLine(
+                              "Метод Евклида = {0}\n"+
+                              "Бинарный метод = {1}\n"+
+                              "Метод с массивом = {2}", 
+                               Euclide.GetGCD(a, b),
+                               Euclide.GetBGCD(a,b),
+                               Euclide.GetGCD(arr)
+                              );
             Console.WriteLine("\nНажмите любую клавишу для выхода...");
             Console.ReadKey();
         }
@@ -27,6 +34,20 @@ namespace n1
         public static int GetGCD(int a, int b)
         {
             return ((a!=0)&&(b!=0))?(a > b) ? GetGCD(a - b, b) : GetGCD(a, b - a):a+b;
+        }
+
+        public static int GetGCD(int[] a)
+        {
+            int min = a.Min();
+            while (min != 1) 
+            {
+                var _digits = from val in a
+                                  where (int)val % min == 0
+                                  select val;
+                if (_digits.Count() == a.Length) break;
+                min--;
+            }
+            return min;
         }
 
         public static int GetBGCD(int a, int b)
